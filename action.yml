@@ -40,7 +40,12 @@ runs:
       shell: bash
       id: bump
       run: |
-        current_version="${{ inputs.version || steps.semver.outputs.latest-tag }}"
+        if [ -z "${{ inputs.version }}" ]; then
+          current_version="${{ steps.semver.outputs.latest-tag }}"
+        else
+          current_version="${{ inputs.version }}"
+        fi
+
         bumped=$(echo $current_version | awk -F. '/[0-9]+\./{$NF++;print}' OFS=.)
         echo "version=${bumped}" >> $GITHUB_OUTPUT
     - name: Configure git
