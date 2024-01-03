@@ -12,21 +12,21 @@ name: ci
 
 on:
   schedule:
-    - cron: "30 1 */1 * *"
+    - cron: '30 1 */1 * *'
 
 jobs:
   scheduled-release:
     if: github.event_name == 'schedule'
     permissions:
-      contents: write  # required for git tag
+      contents: write # required for git tag
     runs-on: ubuntu-latest
     steps:
       - name: Bump version
         uses: licenseware/bump-version@v1
         with:
-          release: "true"  # Publish GitHub release (truthy values: true, yes, 1)
-          tag: "true"  # Tag and push to repository (truthy values: true, yes, 1)
-          token: ${{ secrets.GITHUB_TOKEN }}  # required for GitHub release
+          release: 'true' # Publish GitHub release (truthy values: true, yes, 1)
+          tag: 'true' # Tag and push to repository (truthy values: true, yes, 1)
+          token: ${{ secrets.GITHUB_TOKEN }} # required for GitHub release
 ```
 
 ### Sign git tags with GPG
@@ -36,13 +36,13 @@ name: ci
 
 on:
   schedule:
-    - cron: "30 1 */1 * *"
+    - cron: '30 1 */1 * *'
 
 jobs:
   scheduled-release:
     if: github.event_name == 'schedule'
     permissions:
-      contents: write  # required for git tag
+      contents: write # required for git tag
     runs-on: ubuntu-latest
     steps:
       - name: Bump version
@@ -50,7 +50,7 @@ jobs:
         with:
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           gpg-key-id: ${{ secrets.GPG_KEY_ID }}
-          tag: "true"
+          tag: 'true'
 ```
 
 ### Bump with no side-effect
@@ -78,8 +78,8 @@ jobs:
 
 Here's a table of input and their output when running this Action:
 
-| Input | Output |
-| --- | --- |
-| v1 | v1.0.1 |
-| v1.2 | v1.2.1 |
+| Input  | Output |
+| ------ | ------ |
+| v1     | v1.0.1 |
+| v1.2   | v1.2.1 |
 | v1.2.3 | v1.2.4 |
