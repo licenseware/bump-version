@@ -13,8 +13,8 @@ on:
     - cron: "*/5 * * * *"
 
 jobs:
-  if: contains(fromJSON('["schedule", "push"]'), github.event_name)
   self-test:
+    if: contains(fromJSON('["schedule", "push"]'), github.event_name)
     permissions:
       contents: write
     runs-on: ubuntu-latest
