@@ -77,7 +77,7 @@ runs:
         git config --global user.name "${{ inputs.author-name }}"
         git config --global user.email "${{ inputs.author-email }}"
     - name: Configure GPG Key signing
-      if: inputs.gpg-private-key != '' && inputs.gpg-key-id != ''
+      if: inputs.gpg-private-key != '' && inputs.gpg-key-id != '' && contains(fromJSON('["true", "yes", "1"]'), inputs.tag)
       shell: bash
       run: |
         git config --global commit.gpgsign true
