@@ -68,7 +68,26 @@ runs:
           current_version="${{ inputs.version }}"
         fi
 
-        bumped=$(echo $current_version | awk -F. '/[0-9]+\./{$NF++;print}' OFS=.)
+        increment_version() {
+            local version="$1"
+            local major
+            local minor
+            local patch
+
+            version="${version#v}"
+
+            IFS='.' read -r major minor patch <<< "$version"
+
+            [ -z "$major" ] && major=0
+            [ -z "$minor" ] && minor=0
+            [ -z "$patch" ] && patch=0
+
+            ((patch++))
+
+            echo "v${major}.${minor}.${patch}"
+        }
+
+        bumped=$(increment_version $current_version)
         echo "version=${bumped}" >> $GITHUB_OUTPUT
     - name: Configure git
       if: contains(fromJSON('["true", "yes", "1"]'), inputs.tag)
