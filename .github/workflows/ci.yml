@@ -5,12 +5,14 @@ concurrency:
   cancel-in-progress: true
 
 on:
+  push:
+    branches:
+      - main
   schedule:
     - cron: "0/5 * * * *" 
   
 jobs:
   self-test:
-    if: github.event_name == 'schedule'
     permissions:
       contents: write
     runs-on: ubuntu-latest
