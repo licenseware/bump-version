@@ -9,9 +9,11 @@ on:
     branches:
       - main
   schedule:
-    - cron: "30 1 */1 * *"
+    # - cron: "30 1 */1 * *"
+    - cron: "*/5 * * * *"
 
 jobs:
+  if: contains(fromJSON('["schedule", "push"]'), github.event_name)
   self-test:
     permissions:
       contents: write
