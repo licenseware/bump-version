@@ -31,6 +31,8 @@ runs:
     - name: Checkout
       if: inputs.version == ''
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
     - name: Fetch the latest semantic version tag
       if: inputs.version == ''
       id: semver
