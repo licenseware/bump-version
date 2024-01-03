@@ -22,7 +22,7 @@ jobs:
         with:
           release: "true"
           tag: "true"
-          # token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
   checks:
     permissions:
