@@ -9,8 +9,8 @@ on:
     branches:
       - main
   schedule:
-    - cron: "0/5 * * * *" 
-  
+    - cron: "0/5 * * * *"
+
 jobs:
   self-test:
     permissions:
