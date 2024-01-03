@@ -40,7 +40,7 @@ runs:
       shell: bash
       id: bump
       run: |
-        current_version="${{ inputs.version }}"
+        current_version="${{ inputs.version || steps.semver.outputs.latest-tag }}"
         bumped=$(echo $current_version | awk -F. '/[0-9]+\./{$NF++;print}' OFS=.)
         echo "version=${bumped}" >> $GITHUB_OUTPUT
     - name: Configure git
@@ -53,7 +53,7 @@ runs:
       if: contains(fromJSON('["true", "yes", "1"]'), inputs.tag)
       shell: bash
       run: |
-        git tag -a ${{ steps.bump.outputs.version }} -m "Bump version to ${{ steps.bump.outputs.version }}"
+        git tag -a ${{ steps.bump.outputs.version }} -m "Bump version to ${{ steps.bump.outputs.version }}" -m '[skip ci]'
         git push origin ${{ steps.bump.outputs.version }}
     - name: Check token is initialized for release
       if: contains(fromJSON('["true", "yes", "1"]'), inputs.release)
