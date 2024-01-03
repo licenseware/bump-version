@@ -25,7 +25,7 @@ jobs:
       - name: Bump me
         id: bump
         uses: licenseware/bump-version@main
-        inputs:
+        with:
           version: ${{ steps.semver.outputs.latest-tag }}
       - name: Configure git
         run: |
