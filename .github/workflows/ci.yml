@@ -21,6 +21,8 @@ jobs:
       - name: Bump me
         uses: licenseware/bump-version@main
         with:
+          author-name: Licenseware Bot
+          author-email: contact@licenseware.io
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           gpg-key-id: ${{ secrets.GPG_KEY_ID }}
           release: "true"

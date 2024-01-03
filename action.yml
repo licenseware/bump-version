@@ -5,6 +5,14 @@ branding:
   icon: arrow-up
 description: Bump patch version of a semantic version
 inputs:
+  author-name:
+    description: "Name of the author to use for the git commit"
+    required: false
+    default: "${{ github.actor }}"
+  author-email:
+    description: "Email of the author to use for the git commit"
+    required: false
+    default: "${{ github.actor }}@users.noreply.github.com"
   gpg-private-key:
     description: "GPG private key to use for signing the tag"
     required: false
@@ -66,8 +74,8 @@ runs:
       if: contains(fromJSON('["true", "yes", "1"]'), inputs.tag)
       shell: bash
       run: |
-        git config --global user.name "${{ github.actor }}"
-        git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+        git config --global user.name "${{ inputs.author-name }}"
+        git config --global user.email "${{ inputs.author-email }}"
     - name: Configure GPG Key signing
       if: inputs.gpg-private-key != '' && inputs.gpg-key-id != ''
       shell: bash
