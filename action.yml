@@ -1,0 +1,24 @@
+name: bump-version
+author: meysam@licenseware.io
+branding:
+  color: purple
+  icon: arrow-up
+description: Bump patch version of a semantic version
+inputs:
+  version:
+    description: Semantic versioning to bump
+    required: true
+outputs:
+  version:
+    description: Bumped semantic version
+    value: ${{ steps.bump.outputs.version }}
+runs:
+  using: composite
+  steps:
+    - name: Bump version
+      shell: bash
+      id: bump
+      run: |
+        current_version="${{ inputs.version }}"
+        bumped=$(echo $current_version | awk -F. '/[0-9]+\./{$NF++;print}' OFS=.)
+        echo "version=${bumped}" >> $GITHUB_OUTPUT
