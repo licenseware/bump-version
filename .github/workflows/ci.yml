@@ -20,5 +20,6 @@ jobs:
       - name: Bump me
         uses: licenseware/bump-version@main
         with:
-          tag: "true"
           release: "true"
+          tag: "true"
+          token: ${{ secrets.GITHUB_TOKEN }}

@@ -5,12 +5,16 @@ branding:
   icon: arrow-up
 description: Bump patch version of a semantic version
 inputs:
+  release:
+    description: "Whether or not to create a GitHub release from the tag (truthy values: true, yes, 1)"
+    required: false
+    default: ""
   tag:
     description: "Whether or not to commit the tag and push to the repository (truthy values: true, yes, 1)"
     required: false
     default: ""
-  release:
-    description: "Whether or not to create a GitHub release from the tag (truthy values: true, yes, 1)"
+  token:
+    description: "GitHub token to use for creating the release"
     required: false
     default: ""
   version:
@@ -51,10 +55,18 @@ runs:
       run: |
         git tag -a ${{ steps.bump.outputs.version }} -m "Bump version to ${{ steps.bump.outputs.version }}"
         git push origin ${{ steps.bump.outputs.version }}
+    - name: Check token is initialized for release
+      if: contains(fromJSON('["true", "yes", "1"]'), inputs.release)
+      shell: bash
+      run: |
+        if [ -z "${{ inputs.token }}" ]; then
+          echo "Missing token input: Provide a GitHub token to use for creating the release"
+          exit 1
+        fi
     - name: Create a GitHub release from tag
       if: contains(fromJSON('["true", "yes", "1"]'), inputs.release)
       shell: bash
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ inputs.token }}
       run: |
         gh release create ${{ steps.bump.outputs.version }} --title "${{ steps.bump.outputs.version }}" --generate-notes --latest
