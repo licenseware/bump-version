@@ -31,9 +31,12 @@ jobs:
         run: |
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+      # - name: Fetch GPG Key
+      #   run: |
+      #     echo "${{ secrets.GPG_PRIVATE_KEY }}" | base64 --decode | gpg --import
       - name: Tag and push
         run: |
-          git tag -s ${{ steps.bump.outputs.version }}
+          git tag -a ${{ steps.bump.outputs.version }} -m "Bump version to ${{ steps.bump.outputs.version }}"
           git push origin ${{ steps.bump.outputs.version }}
       - name: Create a GitHub release from tag
         env:
