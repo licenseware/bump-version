@@ -28,3 +28,13 @@ jobs:
           tag: "true"  # Tag and push to repository (truthy values: true, yes, 1)
           token: ${{ secrets.GITHUB_TOKEN }}  # required for GitHub release
 ```
+
+## How it works
+
+Here's a table of input and their output when running this Action:
+
+| Input | Output |
+| --- | --- |
+| v1 | v1.0.1 |
+| v1.2 | v1.2.1 |
+| v1.2.3 | v1.2.4 |
