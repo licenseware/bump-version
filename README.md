@@ -29,6 +29,27 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}  # required for GitHub release
 ```
 
+### Bump with no side-effect
+
+```yaml
+name: ci
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Bump version
+        id: bump
+        uses: licenseware/bump-version@v1
+      - name: Get the new version
+        run: echo "The new version is ${{ steps.bump.outputs.version }}"
+```
+
 ## How it works
 
 Here's a table of input and their output when running this Action:
