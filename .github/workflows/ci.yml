@@ -9,10 +9,11 @@ on:
     branches:
       - main
   schedule:
-    - cron: "0/5 * * * *"
+    - cron: "30 1 */1 * *"
 
 jobs:
   self-test:
+    if: github.event_name == "schedule"
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -25,6 +26,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
   checks:
+    if: github.event_name == "push"
     permissions:
       contents: read
     runs-on: ubuntu-latest
