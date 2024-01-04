@@ -127,7 +127,9 @@ runs:
     - name: Create tag
       shell: bash
       run: |
-        git tag ${{ steps.sign.outputs.flag }} ${{ steps.bump.outputs.version }} -m "${{ steps.bump.outputs.version }}" -m "${{ inputs.tag-extra-message }}"
+        git tag ${{ steps.sign.outputs.flag }} ${{ steps.bump.outputs.version }} \
+          -m "${{ steps.bump.outputs.version }}" \
+          $([[ ! -z "${{ inputs.tag-extra-message }}" ]] && echo "-m '${{ inputs.tag-extra-message }}'")
     - name: Push tag
       if: contains(fromJSON('["true", "yes", "1"]'), inputs.tag)
       shell: bash
