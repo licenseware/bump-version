@@ -111,11 +111,14 @@ runs:
         else
           echo "flag=-a" >> $GITHUB_OUTPUT
         fi
-    - name: Tag and push
-      if: contains(fromJSON('["true", "yes", "1"]'), inputs.tag)
+    - name: Create tag
       shell: bash
       run: |
         git tag ${{ steps.sign.outputs.flag }} ${{ steps.bump.outputs.version }} -m "${{ steps.bump.outputs.version }}" -m "${{ inputs.tag-extra-message }}"
+    - name: Push tag
+      if: contains(fromJSON('["true", "yes", "1"]'), inputs.tag)
+      shell: bash
+      run: |
         git push origin ${{ steps.bump.outputs.version }}
     - name: Check token is initialized for release
       if: contains(fromJSON('["true", "yes", "1"]'), inputs.release)
