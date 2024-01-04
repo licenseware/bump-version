@@ -56,8 +56,22 @@ runs:
     - name: Fetch the latest semantic version tag
       if: inputs.version == ''
       id: semver
-      shell: bash
-      run: echo "latest-tag=$(git describe --tags `git rev-list --tags --max-count=20` | sort -h | tail -1)" >> $GITHUB_OUTPUT
+      env:
+        SEMVER_REGEX: '^(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:-(?P<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?P<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$'
+      shell: python
+      run: |
+        import re
+        import os
+        import subprocess
+
+        def biggest_semver():
+            tags = subprocess.check_output(['git', 'tag', '--list', '--sort=-v:refname']).decode('utf-8').splitlines()
+            for tag in tags:
+                if re.match(os.environ['SEMVER_REGEX'], tag):
+                    return tag
+
+        with open(os.environ['GITHUB_OUTPUT'], 'a') as github_output:
+          print(f'latest-tag={biggest_semver()}', file=github_output)
     - name: Bump version
       shell: bash
       id: bump
