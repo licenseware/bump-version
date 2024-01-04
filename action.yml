@@ -90,13 +90,12 @@ runs:
         bumped=$(increment_version $current_version)
         echo "version=${bumped}" >> $GITHUB_OUTPUT
     - name: Configure git
-      if: contains(fromJSON('["true", "yes", "1"]'), inputs.tag)
       shell: bash
       run: |
         git config --global user.name "${{ inputs.author-name }}"
         git config --global user.email "${{ inputs.author-email }}"
     - name: Configure GPG Key signing
-      if: inputs.gpg-private-key != '' && inputs.gpg-key-id != '' && contains(fromJSON('["true", "yes", "1"]'), inputs.tag)
+      if: inputs.gpg-private-key != '' && inputs.gpg-key-id != ''
       shell: bash
       run: |
         git config --global commit.gpgsign true
